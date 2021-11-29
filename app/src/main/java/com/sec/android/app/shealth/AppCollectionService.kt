@@ -99,20 +99,20 @@ class AppCollectionService : RemoteViewsService() {
             }
         }
         override fun onDataSetChanged() {
-            RequestLatestCommit(context.getString(R.string.git_url)).setResultListener(
-                object : RequestLatestCommit.ResultListener {
-                override fun onResults(result: String) {
-                    try {
-                        val jsonObject = JSONTokener(result).nextValue() as JSONObject
-                        val lastCommit = (jsonObject["name"] as String).substring(10)
-                        if (BuildConfig.COMMIT != lastCommit) {
-                            showUpdateNotification()
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            })
+//            RequestLatestCommit(context.getString(R.string.git_url)).setResultListener(
+//                object : RequestLatestCommit.ResultListener {
+//                override fun onResults(result: String) {
+//                    try {
+//                        val jsonObject = JSONTokener(result).nextValue() as JSONObject
+//                        val lastCommit = (jsonObject["name"] as String).substring(10)
+//                        if (BuildConfig.COMMIT != lastCommit) {
+//                            showUpdateNotification()
+//                        }
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            })
 
             isGridView = SamSprung.prefs.getBoolean(SamSprung.prefLayout, isGridView)
 

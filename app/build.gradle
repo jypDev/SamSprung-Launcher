@@ -10,11 +10,11 @@ android {
         applicationId "com.sec.android.app.shealth"
         minSdk 30
         targetSdk 30
-        versionCode 6196009
-        versionName "6.19.6.009"
+        versionCode 1
+        versionName "1.0.0"
 
         def commit = 'git rev-parse --short HEAD'.execute().text.trim()
-        buildConfigField "String", "COMMIT", "\""+commit+"\""
+        buildConfigField "String", "COMMIT", "\"" + commit + "\""
         project.archivesBaseName = "SamSprung-" + commit
     }
 
@@ -26,30 +26,25 @@ android {
             universalApk false
         }
     }
+    signingConfigs {
+        releaseWithSignedKey {
+            storeFile file(SIGNED_STORE_FILE)
+            storePassword SIGNED_STORE_PASSWORD
+            keyAlias SIGNED_KEY_ALIAS
+            keyPassword SIGNED_KEY_PASSWORD
+        }
+    }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseWithSignedKey
         }
         debug {
             initWith release
             debuggable true
-            try {
-                def keystoreProps = new Properties()
-                keystoreProps.load(new FileInputStream(rootProject.file("keystore.properties")))
-                signingConfigs {
-                    debug {
-                        keyAlias keystoreProps['keyAlias']
-                        keyPassword keystoreProps['keyPassword']
-                        storeFile file(keystoreProps['storeFile'])
-                        storePassword keystoreProps['storePassword']
-                    }
-                }
-                buildTypes.debug.signingConfig signingConfigs.debug
-            } catch (FileNotFoundException e) {
-                // Github actions can go $#%& right off with this
-            }
+
         }
     }
 
